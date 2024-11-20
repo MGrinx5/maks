@@ -1,20 +1,23 @@
+# Получаем директорию, где находится скрипт
+$scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+
 # Путь к локальному файлу с версией
-$localVersionFile = "version.txt"
+$localVersionFile = Join-Path -Path $scriptDirectory -ChildPath "version.txt"
 
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
 
 # Файл для выполнения
-$runScript = "run.bat"
+$runScript = Join-Path -Path $scriptDirectory -ChildPath "run.bat"
 
 # Проверяем наличие необходимых файлов
 if (-Not (Test-Path $localVersionFile)) {
-    Write-Output "File $localVersionFile not found. Script terminated."
+    Write-Output "File $localVersionFile not found in $scriptDirectory. Script terminated."
     exit 1
 }
 
 if (-Not (Test-Path $runScript)) {
-    Write-Output "$runScript file not found. Script terminated."
+    Write-Output "$runScript file not found in $scriptDirectory. Script terminated."
     exit 1
 }
 
@@ -37,7 +40,7 @@ if ($localVersion -ne $remoteVersion) {
     Write-Output "Downloading and running update script..."
     try {
         iex (New-Object Net.WebClient).DownloadString('http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/DownloadString.txt')
-        Write-Output "The update was successful.."
+        Write-Output "Update script executed successfully."
 
         # Обновляем локальный файл версии
         Write-Output "Updating local version file..."
