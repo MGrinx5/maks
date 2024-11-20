@@ -7,14 +7,33 @@ $runScript = "C:\ProgramData\Maks\run.bat"
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
 
+# Функция для сравнения версий
+function Compare-Versions($version1, $version2) {
+    $version1Parts = $version1.Split('.')
+    $version2Parts = $version2.Split('.')
+    
+    for ($i = 0; $i -lt [Math]::Max($version1Parts.Length, $version2Parts.Length); $i++) {
+        $v1 = if ($i -lt $version1Parts.Length) { [int]$version1Parts[$i] } else { 0 }
+        $v2 = if ($i -lt $version2Parts.Length) { [int]$version2Parts[$i] } else { 0 }
+        
+        if ($v1 -lt $v2) {
+            return -1  # $version1 < $version2
+        } elseif ($v1 -gt $v2) {
+            return 1  # $version1 > $version2
+        }
+    }
+    
+    return 0  # версии одинаковые
+}
+
 # Проверяем наличие необходимых файлов
 if (-Not (Test-Path $localVersionFile)) {
-    Write-Output "File $localVersionFile not found in $scriptDirectory. Script terminated."
+    Write-Output "File $localVersionFile not found. Script terminated."
     exit 1
 }
 
 if (-Not (Test-Path $runScript)) {
-    Write-Output "$runScript file not found in $scriptDirectory. Script terminated."
+    Write-Output "$runScript file not found. Script terminated."
     exit 1
 }
 
@@ -30,7 +49,7 @@ try {
 }
 
 # Сравниваем версии
-if ($localVersion -ne $remoteVersion) {
+if (Compare-Versions $localVersion $remoteVersion -ne 0) {
     Write-Output "Update required: local version $localVersion, latest version $remoteVersion."
 
     # Запускаем команду для обновления
