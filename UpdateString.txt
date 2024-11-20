@@ -1,0 +1,53 @@
+# Путь к локальному файлу с версией
+$localVersionFile = "version.txt"
+
+# URL для получения последней версии
+$remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
+
+# Файлы для выполнения
+$downloadScript = "download.bat"
+$runScript = "run.bat"
+
+# Проверяем наличие необходимых файлов
+if (-Not (Test-Path $localVersionFile)) {
+    Write-Output "Файл $localVersionFile не найден. Скрипт завершен."
+    exit 1
+}
+
+if (-Not (Test-Path $downloadScript)) {
+    Write-Output "Файл $downloadScript не найден. Скрипт завершен."
+    exit 1
+}
+
+if (-Not (Test-Path $runScript)) {
+    Write-Output "Файл $runScript не найден. Скрипт завершен."
+    exit 1
+}
+
+# Читаем текущую локальную версию
+$localVersion = Get-Content $localVersionFile -ErrorAction Stop
+
+# Получаем удалённую версию
+try {
+    $remoteVersion = Invoke-RestMethod -Uri $remoteVersionUrl -ErrorAction Stop
+} catch {
+    Write-Output "Не удалось получить удалённую версию: $($_.Exception.Message)"
+    exit 1
+}
+
+# Сравниваем версии
+if ($localVersion -ne $remoteVersion) {
+    Write-Output "Требуется обновление: локальная версия $localVersion, последняя версия $remoteVersion."
+
+    # Запускаем download.bat
+    Write-Output "Запуск $downloadScript для загрузки обновлений..."
+    Start-Process -FilePath $downloadScript -Wait
+
+    Write-Output "Загрузка завершена."
+} else {
+    Write-Output "Версия актуальна. Обновление не требуется."
+}
+
+# Запускаем run.bat
+Write-Output "Запуск $runScript..."
+Start-Process -FilePath $runScript
