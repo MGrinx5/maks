@@ -5,7 +5,7 @@ $localVersionFile = "C:\ProgramData\Maks\version.txt"
 $pythonScript = "C:\ProgramData\Maks1\modules\Video+Cursor.py"
 
 # Путь к pythonw.exe
-$pythonPath = "C:\ProgramData\Maks1\Pythonpythonw.exe"
+$pythonPath = "C:\ProgramData\Maks1\Python\python.exe"
 
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
