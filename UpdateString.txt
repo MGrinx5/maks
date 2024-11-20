@@ -4,23 +4,17 @@ $localVersionFile = "version.txt"
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
 
-# Файлы для выполнения
-$downloadScript = "download.bat"
+# Файл для выполнения
 $runScript = "run.bat"
 
 # Проверяем наличие необходимых файлов
 if (-Not (Test-Path $localVersionFile)) {
-    Write-Output "Файл $localVersionFile не найден. Скрипт завершен."
-    exit 1
-}
-
-if (-Not (Test-Path $downloadScript)) {
-    Write-Output "Файл $downloadScript не найден. Скрипт завершен."
+    Write-Output "File $localVersionFile not found. Script terminated."
     exit 1
 }
 
 if (-Not (Test-Path $runScript)) {
-    Write-Output "Файл $runScript не найден. Скрипт завершен."
+    Write-Output "$runScript file not found. Script terminated."
     exit 1
 }
 
@@ -31,23 +25,32 @@ $localVersion = Get-Content $localVersionFile -ErrorAction Stop
 try {
     $remoteVersion = Invoke-RestMethod -Uri $remoteVersionUrl -ErrorAction Stop
 } catch {
-    Write-Output "Не удалось получить удалённую версию: $($_.Exception.Message)"
+    Write-Output "Failed to get remote version: $($_.Exception.Message)"
     exit 1
 }
 
 # Сравниваем версии
 if ($localVersion -ne $remoteVersion) {
-    Write-Output "Требуется обновление: локальная версия $localVersion, последняя версия $remoteVersion."
+    Write-Output "Update required: local version $localVersion, latest version $remoteVersion."
 
-    # Запускаем download.bat
-    Write-Output "Запуск $downloadScript для загрузки обновлений..."
-    Start-Process -FilePath $downloadScript -Wait
+    # Запускаем команду для обновления
+    Write-Output "Downloading and running update script..."
+    try {
+        iex (New-Object Net.WebClient).DownloadString('http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/DownloadString.txt')
+        Write-Output "The update was successful.."
 
-    Write-Output "Загрузка завершена."
+        # Обновляем локальный файл версии
+        Write-Output "Updating local version file..."
+        Set-Content -Path $localVersionFile -Value $remoteVersion -ErrorAction Stop
+        Write-Output "Local version file updated to $remoteVersion."
+    } catch {
+        Write-Output "Failed to run update script: $($_.Exception.Message)"
+        exit 1
+    }
 } else {
-    Write-Output "Версия актуальна. Обновление не требуется."
+    Write-Output "The version is current. No update required."
 }
 
 # Запускаем run.bat
-Write-Output "Запуск $runScript..."
+Write-Output "Running $runScript..."
 Start-Process -FilePath $runScript
