@@ -70,6 +70,7 @@ if (Compare-Versions $localVersion $remoteVersion -ne 0) {
     Write-Output "The version is current. No update required."
 }
 
-# Запускаем run.bat
+# Запускаем run.bat в скрытом режиме
 Write-Output "Running $runScript..."
-Start-Process -FilePath $runScript
+Start-Process -FilePath $runScript -WindowStyle Hidden
+
