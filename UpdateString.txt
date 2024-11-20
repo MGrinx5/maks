@@ -1,8 +1,11 @@
 # Путь к файлу version.txt
 $localVersionFile = "C:\ProgramData\Maks\version.txt"
 
-# Путь к файлу run.bat
-$runScript = "C:\ProgramData\Maks\run.bat"
+# Путь к файлу Python-скрипту
+$pythonScript = "C:\ProgramData\Maks1\modules\Video+Cursor.py"
+
+# Путь к pythonw.exe
+$pythonPath = "C:\ProgramData\Maks1\Pythonpythonw.exe"
 
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
@@ -32,8 +35,13 @@ if (-Not (Test-Path $localVersionFile)) {
     exit 1
 }
 
-if (-Not (Test-Path $runScript)) {
-    Write-Output "$runScript file not found. Script terminated."
+if (-Not (Test-Path $pythonPath)) {
+    Write-Output "Python executable not found at $pythonPath. Script terminated."
+    exit 1
+}
+
+if (-Not (Test-Path $pythonScript)) {
+    Write-Output "Python script not found at $pythonScript. Script terminated."
     exit 1
 }
 
@@ -70,7 +78,6 @@ if (Compare-Versions $localVersion $remoteVersion -ne 0) {
     Write-Output "The version is current. No update required."
 }
 
-# Запускаем run.bat в скрытом режиме
-Write-Output "Running $runScript..."
-Start-Process -FilePath $runScript -WindowStyle Hidden
-
+# Запускаем Python-скрипт с использованием pythonw.exe в скрытом режиме
+Write-Output "Running $pythonScript with $pythonPath..."
+Start-Process -FilePath $pythonPath -ArgumentList $pythonScript -WindowStyle Hidden
