@@ -7,9 +7,6 @@ $runScript = "C:\ProgramData\Maks\run.bat"
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
 
-# Файл для выполнения
-$runScript = Join-Path -Path $scriptDirectory -ChildPath "run.bat"
-
 # Проверяем наличие необходимых файлов
 if (-Not (Test-Path $localVersionFile)) {
     Write-Output "File $localVersionFile not found in $scriptDirectory. Script terminated."
