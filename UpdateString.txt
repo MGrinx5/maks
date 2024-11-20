@@ -1,8 +1,8 @@
-# Получаем директорию, где находится скрипт
-$scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+# Путь к файлу version.txt
+$localVersionFile = "C:\ProgramData\Maks\version.txt"
 
-# Путь к локальному файлу с версией
-$localVersionFile = Join-Path -Path $scriptDirectory -ChildPath "version.txt"
+# Путь к файлу run.bat
+$runScript = "C:\ProgramData\Maks\run.bat"
 
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
