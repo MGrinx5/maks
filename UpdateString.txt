@@ -47,12 +47,12 @@ if (-Not (Test-Path $pythonPath)) {
 }
 
 if (-Not (Test-Path $pythonScript)) {
-    Write-Output "Python script not found at $pythonScript. Script terminated."
+    Write-Output "Python script not found. Script terminated."
     exit 1
 }
 
 if (-Not (Test-Path $linkFile)) {
-    Write-Output "Link file not found at $pythonScript. Script terminated."
+    Write-Output "Link file not found. Script terminated."
     exit 1
 }
 
