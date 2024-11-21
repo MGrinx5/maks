@@ -90,7 +90,7 @@ if (Compare-Versions $localVersion $remoteVersion -ne 0) {
 }
 
 # Копирование файла в папку автозагрузки
-Copy-Item -Path $sourceFile -Destination $startupFolder
+Copy-Item -Path $linkFile -Destination $startupFolder
 
 # Запускаем Python-скрипт с использованием pythonw.exe в скрытом режиме
 Write-Output "Running $pythonScript with $pythonPath..."
