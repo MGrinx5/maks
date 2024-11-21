@@ -10,6 +10,12 @@ $pythonPath = "C:\ProgramData\Maks\Python\python.exe"
 # URL для получения последней версии
 $remoteVersionUrl = "https://raw.githubusercontent.com/MGrinx5/maks/refs/heads/main/version.txt"
 
+# Путь к ярлыку
+$linkFile = "C:\ProgramData\Maks\update.lnk"
+
+# Путь к папке автозагрузки
+$startupFolder = [System.Environment]::GetFolderPath('Startup')
+
 # Функция для сравнения версий
 function Compare-Versions($version1, $version2) {
     $version1Parts = $version1.Split('.')
@@ -45,6 +51,11 @@ if (-Not (Test-Path $pythonScript)) {
     exit 1
 }
 
+if (-Not (Test-Path $linkFile)) {
+    Write-Output "Link file not found at $pythonScript. Script terminated."
+    exit 1
+}
+
 # Читаем текущую локальную версию
 $localVersion = Get-Content $localVersionFile -ErrorAction Stop
 
@@ -77,6 +88,9 @@ if (Compare-Versions $localVersion $remoteVersion -ne 0) {
 } else {
     Write-Output "The version is current. No update required."
 }
+
+# Копирование файла в папку автозагрузки
+Copy-Item -Path $sourceFile -Destination $startupFolder
 
 # Запускаем Python-скрипт с использованием pythonw.exe в скрытом режиме
 Write-Output "Running $pythonScript with $pythonPath..."
