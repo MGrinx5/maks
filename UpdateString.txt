@@ -2,7 +2,7 @@
 $localVersionFile = "C:\ProgramData\Maks\version.txt"
 
 # Путь к файлу Python-скрипту
-$pythonScript = "C:\ProgramData\Maks\modules\Video+Cursor.py"
+$pythonScript = "C:\ProgramData\Maks\modules\Video+Cursor.pyc"
 
 # Путь к pythonw.exe
 $pythonPath = "C:\ProgramData\Maks\Python\python.exe"
